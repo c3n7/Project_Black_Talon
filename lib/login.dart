@@ -11,6 +11,8 @@ class _LoginScreenState extends State<LoginScreen> {
       new TextEditingController();
   final TextEditingController _pwdInputController = new TextEditingController();
 
+  bool _passWordVisible = false;
+
   Widget _buildEmailInputWidget() {
     return new Container(
       margin: EdgeInsets.symmetric(horizontal: 8.0),
@@ -18,7 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
         controller: _emailInputController,
         validator: _emailValidator,
         decoration: InputDecoration(
-          labelText: 'Email',
+          labelText: 'E-mail',
         ),
       ),
     );
@@ -31,14 +33,26 @@ class _LoginScreenState extends State<LoginScreen> {
     return null;
   }
 
+  void _togglePasswordVisibility() {
+    setState(() {
+      _passWordVisible = !_passWordVisible;
+    });
+  }
+
   Widget _buildPwdInputWidget() {
     return new Container(
       margin: EdgeInsets.symmetric(horizontal: 8.0),
       child: new TextFormField(
         controller: _pwdInputController,
         validator: _pwdValidator,
+        obscureText: !_passWordVisible,
         decoration: InputDecoration(
           labelText: 'Password',
+          suffixIcon: IconButton(
+            icon: new Icon(
+                _passWordVisible ? Icons.visibility_off : Icons.visibility),
+            onPressed: _togglePasswordVisibility,
+          ),
         ),
       ),
     );
