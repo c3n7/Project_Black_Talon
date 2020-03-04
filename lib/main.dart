@@ -13,7 +13,7 @@ void main() {
       initialRoute: '/',
       routes: {
         '/': (context) => LoginScreen(),
-        '/home': (context) => HomePage(),
+        '/home': (context) => HomeScreen(),
       },
     ),
   );
