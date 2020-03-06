@@ -1,3 +1,4 @@
+import 'package:Project_Black_Talon/services/auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -68,9 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void _loginButtonPressed() {
     if (_loginFormKey.currentState.validate()) {
       print(_emailInputController.text + " : " + _pwdInputController.text);
-      _emailInputController.clear();
-      _pwdInputController.clear();
-      Navigator.pushNamed(context, '/home');
+      signInAuth(_emailInputController.text, _pwdInputController.text, context);
     }
   }
 
