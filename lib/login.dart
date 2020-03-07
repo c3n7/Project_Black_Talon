@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
       print(_emailInputController.text + " : " + _pwdInputController.text);
       _emailInputController.clear();
       _pwdInputController.clear();
-      Navigator.pushNamed(context, '/home');
+      Navigator.pushReplacementNamed(context, '/home');
     }
   }
 
