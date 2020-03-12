@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:Project_Black_Talon/navigationdrawer.dart';
 
-class ContractorsScreen extends StatelessWidget {
+class ContractorsScreen extends StatefulWidget {
+  @override
+  _ContractorsScreenState createState() => _ContractorsScreenState();
+}
+
+class _ContractorsScreenState extends State<ContractorsScreen> {
   Future<void> _showAlert(BuildContext context) async {
     return showDialog<void>(
       context: context,
