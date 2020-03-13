@@ -204,43 +204,45 @@ class _KeysScreenState extends State<KeysScreen> {
         title: Text('Keys'),
       ),
       drawer: NavigationDrawer(),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: <Widget>[
-            _buildFirstNameInputWidget(),
-            _buildLastNameInputWidget(),
-            _buildPhoneNbrInputWidget(),
-            _buildKeyDepartmentInputWidget(),
-            _buildWhoReturnedInputWidget(),
-            Container(
-              margin: EdgeInsets.only(left: 8.0, right: 8.0, top: 18.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    'Key Status',
-                    style: TextStyle(
-                      fontSize: 17.5,
-                      color: Colors.black54,
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              _buildFirstNameInputWidget(),
+              _buildLastNameInputWidget(),
+              _buildPhoneNbrInputWidget(),
+              _buildKeyDepartmentInputWidget(),
+              _buildWhoReturnedInputWidget(),
+              Container(
+                margin: EdgeInsets.only(left: 8.0, right: 8.0, top: 18.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      'Key Status',
+                      style: TextStyle(
+                        fontSize: 17.5,
+                        color: Colors.black54,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            _buildKeyStatusInputWidget(),
-            _buildSecurityPersonInputWidget(),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: RaisedButton(
-                color: Theme.of(context).primaryColor,
-                textColor: Colors.white,
-                onPressed: _submitButtonPressed,
-                child: Text('Submit'),
+              _buildKeyStatusInputWidget(),
+              _buildSecurityPersonInputWidget(),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: RaisedButton(
+                  color: Theme.of(context).primaryColor,
+                  textColor: Colors.white,
+                  onPressed: _submitButtonPressed,
+                  child: Text('Submit'),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
