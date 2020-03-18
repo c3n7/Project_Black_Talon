@@ -7,8 +7,36 @@ class DomesticAndTeachersScreen extends StatefulWidget {
 }
 
 class _DomesticAndTeachersState extends State<StatefulWidget> {
+  final _idFormKey = GlobalKey<FormState>();
+  final _bioFormKey = GlobalKey<FormState>();
+  final TextEditingController _idNumberInputController =
+      new TextEditingController();
+  final TextEditingController _firstNameInputController =
+      new TextEditingController();
+  final TextEditingController _surnameInputController =
+      new TextEditingController();
+  final TextEditingController _phoneNbrInputController =
+      new TextEditingController();
+
   int _currentStep = 0;
   bool _accountPresent = false;
+
+  String _idNumberValidator(String idNumber) {
+    return null;
+  }
+
+  String _firstNameValidator(String idNumber) {
+    return null;
+  }
+
+  String _surnameValidator(String idNumber) {
+    return null;
+  }
+
+  String _phoneNbrValidator(String idNumber) {
+    return null;
+  }
+
   List<StepState> _stepStates = [
     StepState.editing,
     StepState.indexed,
@@ -20,12 +48,17 @@ class _DomesticAndTeachersState extends State<StatefulWidget> {
         title: const Text('Id Number'),
         isActive: _currentStep >= 0,
         state: _stepStates[0],
-        content: Column(
-          children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Id number'),
-            ),
-          ],
+        content: Form(
+          key: _idFormKey,
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                controller: _idNumberInputController,
+                validator: _idNumberValidator,
+                decoration: InputDecoration(labelText: 'Id number'),
+              ),
+            ],
+          ),
         ),
       ),
       Step(
@@ -40,18 +73,27 @@ class _DomesticAndTeachersState extends State<StatefulWidget> {
 
   Widget _buildYourDetails() {
     if (!_accountPresent) {
-      return new Column(
-        children: <Widget>[
-          TextFormField(
-            decoration: InputDecoration(labelText: 'First Name'),
-          ),
-          TextFormField(
-            decoration: InputDecoration(labelText: 'Surname'),
-          ),
-          TextFormField(
-            decoration: InputDecoration(labelText: 'Phone Number'),
-          ),
-        ],
+      return new Form(
+        key: _bioFormKey,
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              controller: _firstNameInputController,
+              validator: _firstNameValidator,
+              decoration: InputDecoration(labelText: 'First Name'),
+            ),
+            TextFormField(
+              controller: _surnameInputController,
+              validator: _surnameValidator,
+              decoration: InputDecoration(labelText: 'Surname'),
+            ),
+            TextFormField(
+              controller: _phoneNbrInputController,
+              validator: _phoneNbrValidator,
+              decoration: InputDecoration(labelText: 'Phone Number'),
+            ),
+          ],
+        ),
       );
     } else {
       return new Column(
@@ -105,13 +147,33 @@ class _DomesticAndTeachersState extends State<StatefulWidget> {
 
   _continue() {
     setState(() {
-      if (this._currentStep < this._getSteps().length - 1) {
-        _stepStates[this._currentStep] = StepState.indexed;
-        this._currentStep += 1;
-        _stepStates[this._currentStep] = StepState.editing;
+      if (this._currentStep == 0) {
+        // The ID Number entry form
+        if (_idFormKey.currentState.validate()) {
+          print("Id Number : " + _idNumberInputController.text);
+
+          _stepStates[this._currentStep] = StepState.indexed;
+          this._currentStep += 1;
+          _stepStates[this._currentStep] = StepState.editing;
+
+          // TODO(ruth): Check if the ID is in firebase then modify:
+          _accountPresent = false;
+        }
       } else {
-        _signedInDialog();
-        print("Completed, check fields");
+        // The second step
+        if (_accountPresent) {
+          // TODO(ruth): The account for the bio exists, react appropriately
+        } else {
+          if (_bioFormKey.currentState.validate()) {
+            // TODO(ruth): The account for the bio doesn't exist, react appropriately
+            print("Id Number : " + _idNumberInputController.text);
+            print("First Name: " + _firstNameInputController.text);
+            print("Surname: " + _surnameInputController.text);
+            print("Phone Number: " + _phoneNbrInputController.text);
+          }
+        }
+        // Display a success message
+        _successSignedInDialog();
       }
     });
   }
@@ -128,7 +190,7 @@ class _DomesticAndTeachersState extends State<StatefulWidget> {
     });
   }
 
-  Future<void> _signedInDialog() async {
+  Future<void> _successSignedInDialog() async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
