@@ -21,19 +21,32 @@ class _DomesticAndTeachersState extends State<StatefulWidget> {
   int _currentStep = 0;
   bool _accountPresent = false;
 
+  // TODO(c3n7): Do better validation
   String _idNumberValidator(String idNumber) {
+    if (idNumber.isEmpty) {
+      return 'Please enter some text';
+    }
     return null;
   }
 
-  String _firstNameValidator(String idNumber) {
+  String _firstNameValidator(String firstName) {
+    if (firstName.isEmpty) {
+      return 'Please enter some text';
+    }
     return null;
   }
 
-  String _surnameValidator(String idNumber) {
+  String _surnameValidator(String surname) {
+    if (surname.isEmpty) {
+      return 'Please enter some text';
+    }
     return null;
   }
 
-  String _phoneNbrValidator(String idNumber) {
+  String _phoneNbrValidator(String phoneNbr) {
+    if (phoneNbr.isEmpty) {
+      return 'Please enter some text';
+    }
     return null;
   }
 
@@ -170,10 +183,11 @@ class _DomesticAndTeachersState extends State<StatefulWidget> {
             print("First Name: " + _firstNameInputController.text);
             print("Surname: " + _surnameInputController.text);
             print("Phone Number: " + _phoneNbrInputController.text);
+
+            // Display a success message
+            _successSignedInDialog();
           }
         }
-        // Display a success message
-        _successSignedInDialog();
       }
     });
   }
@@ -208,7 +222,6 @@ class _DomesticAndTeachersState extends State<StatefulWidget> {
             FlatButton(
               child: Text('Okay'),
               onPressed: () {
-                print("Oh no!!");
                 Navigator.of(context).pop();
               },
             ),
