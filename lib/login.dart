@@ -20,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: new TextFormField(
         controller: _emailInputController,
         validator: _emailValidator,
+        keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           labelText: 'E-mail',
         ),
@@ -69,7 +70,8 @@ class _LoginScreenState extends State<LoginScreen> {
   void _loginButtonPressed() {
     if (_loginFormKey.currentState.validate()) {
       print(_emailInputController.text + " : " + _pwdInputController.text);
-      signInAuth(_emailInputController.text, _pwdInputController.text, context);
+      signInAuth(
+          _emailInputController.text.trim(), _pwdInputController.text, context);
     }
   }
 
