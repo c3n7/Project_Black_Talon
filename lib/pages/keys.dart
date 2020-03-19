@@ -1,6 +1,8 @@
+﻿import 'package:Project_Black_Talon/services/auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:Project_Black_Talon/navigationdrawer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 enum KeyStatus { OKAY, LOST }
 
@@ -19,10 +21,9 @@ class _KeysScreenState extends State<KeysScreen> {
       new TextEditingController();
   final TextEditingController _whoReturnedController =
       new TextEditingController();
-  final TextEditingController _keyStatusController =
-      new TextEditingController();
   final TextEditingController _securityPersonController =
       new TextEditingController();
+  CrudMethods obj = new CrudMethods();
 
   Widget _buildFirstNameInputWidget() {
     return new Container(
@@ -174,26 +175,18 @@ class _KeysScreenState extends State<KeysScreen> {
 
   void _submitButtonPressed() {
     if (_formKey.currentState.validate()) {
-      String _firstName = _firstNameController.text;
-      String _lastName = _lastNameController.text;
-      String _phoneNbr = _phoneNbrController.text;
-      String _keyDepartment = _keyDepartmentController.text;
-      String _securityPerson = _securityPersonController.text;
-      String _whoReturned = _whoReturnedController.text;
-      String _keyStatusString = _keyStatus == KeyStatus.OKAY ? 'Okay' : 'Lost';
-      print(_firstName +
-          " : " +
-          _lastName +
-          " : " +
-          _phoneNbr +
-          ' : ' +
-          _keyDepartment +
-          ' : ' +
-          _securityPerson +
-          ' : ' +
-          _whoReturned +
-          ' : ' +
-          _keyStatusString);
+      bool _keyStatusBool = _keyStatus == KeyStatus.OKAY ? true : false;
+      obj.addData({
+        'firstname': this._firstNameController.text,
+        'lastname': this._lastNameController.text,
+        'phoneNbr': this._phoneNbrController.text,
+        'keyDepartment': this._keyDepartmentController.text,
+        'securityPerson': this._securityPersonController.text,
+        'whoReturned': this._whoReturnedController.text,
+        'keyStatus': _keyStatusBool
+      }).catchError((e) {
+        print(e);
+      });
     }
   }
 
