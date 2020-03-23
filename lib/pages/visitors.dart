@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:Project_Black_Talon/services/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:Project_Black_Talon/navigationdrawer.dart';
 
@@ -27,6 +29,8 @@ class _VisitorsScreen extends State<StatefulWidget> {
 
   int _currentStep = 0;
   bool _accountPresent = false;
+
+  CrudMethods obj = new CrudMethods();
 
   // TODO(c3n7): Do better validation
   String _idNumberValidator(String idNumber) {
@@ -232,6 +236,21 @@ class _VisitorsScreen extends State<StatefulWidget> {
     );
   }
 
+  Future<void> getVisitor() async {
+    return await Firestore.instance
+        .collection('visitors')
+        .where('Id_Number', isEqualTo: this._idNumberInputController.text)
+        .getDocuments();
+  }
+
+  Future<void> checkExists(reference, idNumber) async {
+    DocumentSnapshot doc =
+        await reference.collection('visitors').document(idNumber).get();
+    this.setState(() {
+      _accountPresent = doc.exists;
+    });
+  }
+
   _continue() {
     setState(() {
       if (this._currentStep == 0) {
@@ -242,13 +261,14 @@ class _VisitorsScreen extends State<StatefulWidget> {
           _stepStates[this._currentStep] = StepState.indexed;
           this._currentStep += 1;
           _stepStates[this._currentStep] = StepState.editing;
-
+          checkExists(_accountPresent, _idNumberInputController.text);
           // TODO(ruth): Check if the ID is in firebase then modify:
           _accountPresent = false;
         }
       } else if (this._currentStep == 1) {
         // The second step
         if (_accountPresent) {
+          getVisitor();
           // TODO(ruth): The account for the bio exists, react appropriately
           _stepStates[this._currentStep] = StepState.indexed;
           this._currentStep += 1;
@@ -259,6 +279,13 @@ class _VisitorsScreen extends State<StatefulWidget> {
             this._currentStep += 1;
             _stepStates[this._currentStep] = StepState.editing;
             // TODO(ruth): The account for the bio doesn't exist, react appropriately
+            obj.addVisitor({
+              'First_Name': this._firstNameInputController.text,
+              'surname': this._surnameInputController.text,
+              'Phone_Number': this._phoneNbrInputController.text,
+            }, _idNumberInputController.text).catchError((e) {
+              print(e);
+            });
             print("Id Number : " + _idNumberInputController.text);
             print("First Name: " + _firstNameInputController.text);
             print("Surname: " + _surnameInputController.text);
@@ -272,9 +299,17 @@ class _VisitorsScreen extends State<StatefulWidget> {
           _stepStates[this._currentStep] = StepState.indexed;
           this._currentStep = _getSteps().length - 1;
           _stepStates[this._currentStep] = StepState.editing;
-
+          obj.addVisits({
+            'id_Number': this._idNumberInputController.text,
+            'host': this._hostInputController.text,
+            'vehicleReg': this._vehicleRegInputController.text,
+            'purpose': this._purposeInputController.text,
+          }).catchError((e) {
+            print(e);
+          });
           // TODO(ruth): Check in the visitor
           print("Host: " + _hostInputController.text);
+          print("Host: " + _vehicleRegInputController.text);
           print("Host: " + _purposeInputController.text);
           _successSignedInDialog();
         }

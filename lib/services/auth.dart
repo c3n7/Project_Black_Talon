@@ -64,5 +64,29 @@ class CrudMethods {
       print('You are not logged in');
     }
   }
-}
 
+  Future<void> addVisitor(db, String idNumber) async {
+    if (isLoggedIn()) {
+      return await Firestore.instance
+          .collection('visitors')
+          .document(idNumber)
+          .setData(db)
+          .catchError((e) {
+        print(e);
+      });
+    }
+  }
+
+  Future<void> addVisits(db) async {
+    if (isLoggedIn()) {
+      return await Firestore.instance
+          .collection('visits')
+          .add(db)
+          .catchError((e) {
+        print(e);
+      });
+    } else {
+      print('You are not logged in');
+    }
+  }
+}
