@@ -140,7 +140,7 @@ class _DeliveryScreenState extends State<StatefulWidget> {
       Step(
         title: const Text('Goods Details'),
         isActive: _currentStep >= 1,
-        state: _stepStates[1],
+        state: _stepStates[2],
         content: _buildGoodsDetails(),
       ),
     ];
@@ -282,23 +282,21 @@ class _DeliveryScreenState extends State<StatefulWidget> {
 
           _stepStates[this._currentStep] = StepState.indexed;
           this._currentStep += 1;
-          _stepStates[this._currentStep] = StepState.editing;
+          print("Current Step" + this._currentStep.toString());
+          _stepStates[1] = StepState.editing;
 
           // TODO(ruth): Check if the ID is in firebase then modify:
           _accountPresent = false;
         }
       } else if (this._currentStep == 1) {
         // The second step
+        _stepStates[this._currentStep] = StepState.indexed;
+        this._currentStep += 1;
+        _stepStates[this._currentStep] = StepState.editing;
         if (_accountPresent) {
           // TODO(ruth): The account for the bio exists, react appropriately
-          _stepStates[this._currentStep] = StepState.indexed;
-          this._currentStep += 1;
-          _stepStates[this._currentStep] = StepState.editing;
         } else {
           if (_bioFormKey.currentState.validate()) {
-            _stepStates[this._currentStep] = StepState.indexed;
-            this._currentStep += 1;
-            _stepStates[this._currentStep] = StepState.editing;
             // TODO(ruth): The account for the bio doesn't exist, react appropriately
             print("Id Number : " + _idNumberInputController.text);
             print("First Name: " + _firstNameInputController.text);
@@ -310,16 +308,16 @@ class _DeliveryScreenState extends State<StatefulWidget> {
         }
       } else if (this._currentStep >= _getSteps().length - 1) {
         if (_goodsDetailsFormKey.currentState.validate()) {
-          _stepStates[this._currentStep] = StepState.indexed;
-          this._currentStep = _getSteps().length - 1;
-          _stepStates[this._currentStep] = StepState.editing;
+          // _stepStates[this._currentStep] = StepState.indexed;
+          // this._currentStep = _getSteps().length - 1;
+          // _stepStates[this._currentStep] = StepState.editing;
 
           // TODO(ruth): Check in the goods
           print("Goods: " + _goodsDescriptionInputController.text);
           print("Quantity: " + _quantityInputController.text);
           print("Quantity Unit Type: " + _quantityUnitTypeInputController.text);
           print("Invoice Number: " + _invoiceNbrInputController.text);
-          print("Invoice Number: " + _destinationInputController.text);
+          print("Destination: " + _destinationInputController.text);
           _successSignedInDialog();
         }
       }
@@ -358,6 +356,21 @@ class _DeliveryScreenState extends State<StatefulWidget> {
             FlatButton(
               child: Text('Okay'),
               onPressed: () {
+                _idNumberInputController.clear();
+                _firstNameInputController.clear();
+                _surnameInputController.clear();
+                _phoneNbrInputController.clear();
+                _vehicleRegInputController.clear();
+                _goodsDescriptionInputController.clear();
+                _quantityInputController.clear();
+                _quantityUnitTypeInputController.clear();
+                _invoiceNbrInputController.clear();
+                _destinationInputController.clear();
+                setState(() {
+                  _stepStates[this._currentStep] = StepState.indexed;
+                  this._currentStep = 0;
+                  _stepStates[this._currentStep] = StepState.editing;
+                });
                 Navigator.of(context).pop();
               },
             ),
