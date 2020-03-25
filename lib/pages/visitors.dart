@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:Project_Black_Talon/navigationdrawer.dart';
 
 class VisitorsScreen extends StatefulWidget {
-  _VisitorsScreen createState() => _VisitorsScreen();
+  _VisitorsScreenState createState() => _VisitorsScreenState();
 }
 
-class _VisitorsScreen extends State<StatefulWidget> {
+class _VisitorsScreenState extends State<StatefulWidget> {
   final _idFormKey = GlobalKey<FormState>();
   final _bioFormKey = GlobalKey<FormState>();
   final _visitDetailsFormKey = GlobalKey<FormState>();
