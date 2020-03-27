@@ -236,16 +236,17 @@ class _VisitorsScreenState extends State<StatefulWidget> {
     );
   }
 
-  Future<void> getVisitor() async {
+  Future<void> getVisitor(String idNumber) async {
     return await Firestore.instance
         .collection('visitors')
-        .where('Id_Number', isEqualTo: this._idNumberInputController.text)
+        .where(idNumber, isEqualTo: this._idNumberInputController.text)
         .getDocuments();
   }
 
-  Future<void> checkExists(reference, idNumber) async {
+  Future<void> checkExists(reference, String idNumber) async {
     DocumentSnapshot doc =
         await reference.collection('visitors').document(idNumber).get();
+    idNumber = this._idNumberInputController.text;
     this.setState(() {
       _accountPresent = doc.exists;
     });
@@ -268,7 +269,7 @@ class _VisitorsScreenState extends State<StatefulWidget> {
       } else if (this._currentStep == 1) {
         // The second step
         if (_accountPresent) {
-          getVisitor();
+          getVisitor(_idNumberInputController.text);
           // TODO(ruth): The account for the bio exists, react appropriately
           _stepStates[this._currentStep] = StepState.indexed;
           this._currentStep += 1;
@@ -280,6 +281,7 @@ class _VisitorsScreenState extends State<StatefulWidget> {
             _stepStates[this._currentStep] = StepState.editing;
             // TODO(ruth): The account for the bio doesn't exist, react appropriately
             obj.addVisitor({
+              'id_Number': this._idNumberInputController.text,
               'First_Name': this._firstNameInputController.text,
               'surname': this._surnameInputController.text,
               'Phone_Number': this._phoneNbrInputController.text,

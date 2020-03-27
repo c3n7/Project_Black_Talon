@@ -77,10 +77,35 @@ class CrudMethods {
     }
   }
 
+  Future<void> addDeliverors(db, String idNumber) async {
+    if (isLoggedIn()) {
+      return await Firestore.instance
+          .collection('deliverors')
+          .document(idNumber)
+          .setData(db)
+          .catchError((e) {
+        print(e);
+      });
+    }
+  }
+
   Future<void> addVisits(db) async {
     if (isLoggedIn()) {
       return await Firestore.instance
           .collection('visits')
+          .add(db)
+          .catchError((e) {
+        print(e);
+      });
+    } else {
+      print('You are not logged in');
+    }
+  }
+
+  Future<void> addGoods(db) async {
+    if (isLoggedIn()) {
+      return await Firestore.instance
+          .collection('goods')
           .add(db)
           .catchError((e) {
         print(e);

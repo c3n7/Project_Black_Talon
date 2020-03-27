@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Project_Black_Talon/navigationdrawer.dart';
+import 'package:Project_Black_Talon/services/auth.dart';
 
 class DeliveryScreen extends StatefulWidget {
   _DeliveryScreenState createState() => _DeliveryScreenState();
@@ -34,6 +35,7 @@ class _DeliveryScreenState extends State<StatefulWidget> {
   int _currentStep = 0;
   bool _accountPresent = false;
 
+  CrudMethods obj = new CrudMethods();
   // TODO(c3n7): Do better validation
   String _idNumberValidator(String idNumber) {
     if (idNumber.isEmpty) {
@@ -273,6 +275,70 @@ class _DeliveryScreenState extends State<StatefulWidget> {
     );
   }
 
+  /*  Future<dynamic> getDeliverors(String varuID) async {
+    QuerySnapshot qs =
+        await Firestore.instance.collection('deliverors').getDocuments();
+    qs.documents.forEach((DocumentSnapshot snap) {
+      snap.documentID;
+    });
+  }
+  
+*/
+  /* Future<dynamic> checkExists(reference, String idNumber) async {
+    DocumentSnapshot doc =
+        await reference.collection('deliverors').document(idNumber).get();
+    this.setState(() {
+      _accountPresent = doc.exists;
+    });
+  }
+*/
+  /* Future<void> getDeliverors(String idNumber) async {
+    return await Firestore.instance
+        .collection('deliverors')
+        .where(idNumber, isEqualTo: this._idNumberInputController.text)
+        .getDocuments();
+  }
+*/
+  /* getDeliverors(idNumber)async{
+  QuerySnapshot db = await Firestore.instance.collection('deliverors').document(idNumber).get().then(function(querySnapshot){
+  querySnapshot.forEach(function(doc){
+  
+  print(doc.id, ":",doc.data());
+  });
+  });
+  
+  }
+  */
+  /*void getData(db, String idNumber) {
+    db
+        .collection("deliverors")
+        .document(idNumber)
+        .getDocuments()
+        .then((QuerySnapshot snapshot) {
+      snapshot.documents.forEach((f) => print('${f.data}}'));
+    });
+  }
+*/
+
+  checkExists(String idNumber) async* {
+    final snapShot = await Firestore.instance
+        .collection('deliverors')
+        .document(idNumber)
+        .get();
+    if (snapShot.exists) {
+      _accountPresent = true;
+    } else {
+      _accountPresent = false;
+    }
+  }
+
+  Stream getData(String idNumber) {
+    return Firestore.instance
+        .collection('deliverors')
+        .document(idNumber)
+        .snapshots();
+  }
+
   _continue() {
     setState(() {
       if (this._currentStep == 0) {
@@ -286,17 +352,39 @@ class _DeliveryScreenState extends State<StatefulWidget> {
           _stepStates[1] = StepState.editing;
 
           // TODO(ruth): Check if the ID is in firebase then modify:
-          _accountPresent = false;
+
+          checkExists(_idNumberInputController.text);
         }
       } else if (this._currentStep == 1) {
         // The second step
         _stepStates[this._currentStep] = StepState.indexed;
         this._currentStep += 1;
         _stepStates[this._currentStep] = StepState.editing;
-        if (_accountPresent) {
+        if (_accountPresent = true) {
+          StreamBuilder<DocumentSnapshot>(
+              stream: getData(_idNumberInputController.text),
+              builder: (BuildContext context,
+                  AsyncSnapshot<DocumentSnapshot> snapshot) {
+                if (!snapshot.hasData) {
+                  return Text('Loading data ...wait');
+                } else {
+                  Map<String, dynamic> documentFields = snapshot.data.data;
+
+                  return Text(
+                      documentFields['First_Name' 'Surname' 'Phone_Number']);
+                }
+              });
           // TODO(ruth): The account for the bio exists, react appropriately
         } else {
           if (_bioFormKey.currentState.validate()) {
+            obj.addDeliverors({
+              'Id_NUmber': this._idNumberInputController.text,
+              'First_Name': this._firstNameInputController.text,
+              'surname': this._surnameInputController.text,
+              'Phone_Number': this._phoneNbrInputController.text
+            }, _idNumberInputController.text).catchError((e) {
+              print(e);
+            });
             // TODO(ruth): The account for the bio doesn't exist, react appropriately
             print("Id Number : " + _idNumberInputController.text);
             print("First Name: " + _firstNameInputController.text);
@@ -311,7 +399,15 @@ class _DeliveryScreenState extends State<StatefulWidget> {
           // _stepStates[this._currentStep] = StepState.indexed;
           // this._currentStep = _getSteps().length - 1;
           // _stepStates[this._currentStep] = StepState.editing;
-
+          obj.addGoods({
+            'goods': this._goodsDescriptionInputController.text,
+            'quantity': this._quantityInputController.text,
+            'quantity_unit_type': this._quantityUnitTypeInputController.text,
+            'invoice_number': this._invoiceNbrInputController.text,
+            'destination': this._destinationInputController.text
+          }).catchError((e) {
+            print(e);
+          });
           // TODO(ruth): Check in the goods
           print("Goods: " + _goodsDescriptionInputController.text);
           print("Quantity: " + _quantityInputController.text);
