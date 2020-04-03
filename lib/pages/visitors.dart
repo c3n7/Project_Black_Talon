@@ -306,13 +306,10 @@ class _VisitorsScreenState extends State<StatefulWidget> {
             'host': this._hostInputController.text,
             'vehicleReg': this._vehicleRegInputController.text,
             'purpose': this._purposeInputController.text,
+            'time_in': Timestamp.now(),
           }).catchError((e) {
             print(e);
           });
-          // TODO(ruth): Check in the visitor
-          print("Host: " + _hostInputController.text);
-          print("Host: " + _vehicleRegInputController.text);
-          print("Host: " + _purposeInputController.text);
           _successSignedInDialog();
         }
       }
