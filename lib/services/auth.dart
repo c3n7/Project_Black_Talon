@@ -102,10 +102,10 @@ class CrudMethods {
     }
   }
 
-  Future<void> addGoods(db) async {
+  Future<void> addDeliveries(db) async {
     if (isLoggedIn()) {
       return await Firestore.instance
-          .collection('goods')
+          .collection('deliveries')
           .add(db)
           .catchError((e) {
         print(e);

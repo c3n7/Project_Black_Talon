@@ -34,6 +34,9 @@ class _DeliveryScreenState extends State<StatefulWidget> {
 
   int _currentStep = 0;
   bool _accountPresent = false;
+  String _firstName = "";
+  String _surname = "";
+  String _phoneNbr = "";
 
   CrudMethods obj = new CrudMethods();
   // TODO(c3n7): Do better validation
@@ -194,7 +197,7 @@ class _DeliveryScreenState extends State<StatefulWidget> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  "John",
+                  _firstName,
                 ),
               ],
             ),
@@ -208,7 +211,7 @@ class _DeliveryScreenState extends State<StatefulWidget> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  "Doe",
+                  _surname,
                 ),
               ],
             ),
@@ -222,7 +225,7 @@ class _DeliveryScreenState extends State<StatefulWidget> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  "+2547 123 445",
+                  _phoneNbr,
                 ),
               ],
             ),
@@ -258,7 +261,10 @@ class _DeliveryScreenState extends State<StatefulWidget> {
           TextFormField(
             controller: _quantityUnitTypeInputController,
             validator: _quantityUnitTypeValidator,
-            decoration: InputDecoration(labelText: 'Quantity Unit Type'),
+            decoration: InputDecoration(
+              labelText: 'Quantity Unit Type',
+              hintText: 'kgs/litres/boxes/containers',
+            ),
           ),
           TextFormField(
             controller: _invoiceNbrInputController,
@@ -309,115 +315,103 @@ class _DeliveryScreenState extends State<StatefulWidget> {
   
   }
   */
-  /*void getData(db, String idNumber) {
-    db
-        .collection("deliverors")
-        .document(idNumber)
-        .getDocuments()
-        .then((QuerySnapshot snapshot) {
-      snapshot.documents.forEach((f) => print('${f.data}}'));
-    });
-  }
-*/
 
-  checkExists(String idNumber) async* {
-    final snapShot = await Firestore.instance
+  Future<void> checkExists(String idNumber) async {
+    final DocumentSnapshot snapShot = await Firestore.instance
         .collection('deliverors')
         .document(idNumber)
         .get();
     if (snapShot.exists) {
-      _accountPresent = true;
+      print("Account Exists");
+      setState(() {
+        _accountPresent = true;
+        _firstName = snapShot.data['first_name'];
+        _surname = snapShot.data['surname'];
+        _phoneNbr = snapShot.data['phone_number'];
+      });
     } else {
-      _accountPresent = false;
+      print("Account not exist");
+      setState(() {
+        _accountPresent = false;
+      });
     }
-  }
 
-  Stream getData(String idNumber) {
-    return Firestore.instance
-        .collection('deliverors')
-        .document(idNumber)
-        .snapshots();
+    setState(() {
+      _stepStates[this._currentStep] = StepState.indexed;
+      this._currentStep += 1;
+      print("Current Step" + this._currentStep.toString());
+      _stepStates[1] = StepState.editing;
+    });
   }
 
   _continue() {
-    setState(() {
-      if (this._currentStep == 0) {
-        // The ID Number entry form
-        if (_idFormKey.currentState.validate()) {
-          print("Id Number : " + _idNumberInputController.text);
-
+    if (this._currentStep == 0) {
+      // The ID Number entry form
+      if (_idFormKey.currentState.validate()) {
+        print("Id Number : " + _idNumberInputController.text);
+        checkExists(_idNumberInputController.text);
+      }
+    } else if (this._currentStep == 1) {
+      // The second step
+      if (_accountPresent) {
+        // TODO(c3n7) Move the vehicle step to its on step
+        // Do nothing, the checkExists fn takes care of this
+        setState(() {
           _stepStates[this._currentStep] = StepState.indexed;
           this._currentStep += 1;
-          print("Current Step" + this._currentStep.toString());
-          _stepStates[1] = StepState.editing;
-
-          // TODO(ruth): Check if the ID is in firebase then modify:
-
-          checkExists(_idNumberInputController.text);
-        }
-      } else if (this._currentStep == 1) {
-        // The second step
-        _stepStates[this._currentStep] = StepState.indexed;
-        this._currentStep += 1;
-        _stepStates[this._currentStep] = StepState.editing;
-        if (_accountPresent = true) {
-          StreamBuilder<DocumentSnapshot>(
-              stream: getData(_idNumberInputController.text),
-              builder: (BuildContext context,
-                  AsyncSnapshot<DocumentSnapshot> snapshot) {
-                if (!snapshot.hasData) {
-                  return Text('Loading data ...wait');
-                } else {
-                  Map<String, dynamic> documentFields = snapshot.data.data;
-
-                  return Text(
-                      documentFields['First_Name' 'Surname' 'Phone_Number']);
-                }
-              });
-          // TODO(ruth): The account for the bio exists, react appropriately
-        } else {
-          if (_bioFormKey.currentState.validate()) {
-            obj.addDeliverors({
-              'Id_NUmber': this._idNumberInputController.text,
-              'First_Name': this._firstNameInputController.text,
-              'surname': this._surnameInputController.text,
-              'Phone_Number': this._phoneNbrInputController.text
-            }, _idNumberInputController.text).catchError((e) {
-              print(e);
-            });
-            // TODO(ruth): The account for the bio doesn't exist, react appropriately
-            print("Id Number : " + _idNumberInputController.text);
-            print("First Name: " + _firstNameInputController.text);
-            print("Surname: " + _surnameInputController.text);
-            print("Phone Number: " + _phoneNbrInputController.text);
-
-            // Display a success message
-          }
-        }
-      } else if (this._currentStep >= _getSteps().length - 1) {
-        if (_goodsDetailsFormKey.currentState.validate()) {
-          // _stepStates[this._currentStep] = StepState.indexed;
-          // this._currentStep = _getSteps().length - 1;
-          // _stepStates[this._currentStep] = StepState.editing;
-          obj.addGoods({
-            'goods': this._goodsDescriptionInputController.text,
-            'quantity': this._quantityInputController.text,
-            'quantity_unit_type': this._quantityUnitTypeInputController.text,
-            'invoice_number': this._invoiceNbrInputController.text,
-            'destination': this._destinationInputController.text
-          }).catchError((e) {
+          _stepStates[this._currentStep] = StepState.editing;
+        });
+      } else {
+        if (_bioFormKey.currentState.validate()) {
+          setState(() {
+            _stepStates[this._currentStep] = StepState.indexed;
+            this._currentStep += 1;
+            _stepStates[this._currentStep] = StepState.editing;
+          });
+          obj.addDeliverors({
+            'first_name': this._firstNameInputController.text,
+            'surname': this._surnameInputController.text,
+            'phone_number': this._phoneNbrInputController.text
+          }, _idNumberInputController.text).catchError((e) {
             print(e);
           });
-          // TODO(ruth): Check in the goods
-          print("Goods: " + _goodsDescriptionInputController.text);
-          print("Quantity: " + _quantityInputController.text);
-          print("Quantity Unit Type: " + _quantityUnitTypeInputController.text);
-          print("Invoice Number: " + _invoiceNbrInputController.text);
-          print("Destination: " + _destinationInputController.text);
-          _successSignedInDialog();
+          // TODO(ruth): The account for the bio doesn't exist, react appropriately
+          print("Id Number : " + _idNumberInputController.text);
+          print("First Name: " + _firstNameInputController.text);
+          print("Surname: " + _surnameInputController.text);
+          print("Phone Number: " + _phoneNbrInputController.text);
+
+          // Display a success message
         }
       }
-    });
+    } else if (this._currentStep >= _getSteps().length - 1) {
+      if (_goodsDetailsFormKey.currentState.validate()) {
+        setState(() {
+          _stepStates[this._currentStep] = StepState.indexed;
+          this._currentStep = _getSteps().length - 1;
+          _stepStates[this._currentStep] = StepState.editing;
+        });
+        obj.addDeliveries({
+          'deliveror': this._idNumberInputController.text,
+          'vehicle_reg': this._vehicleRegInputController.text,
+          'goods': this._goodsDescriptionInputController.text,
+          'quantity': this._quantityInputController.text,
+          'quantity_unit_type': this._quantityUnitTypeInputController.text,
+          'invoice_number': this._invoiceNbrInputController.text,
+          'destination': this._destinationInputController.text,
+          'time_delivered': Timestamp.now()
+        }).catchError((e) {
+          print(e);
+        });
+        // TODO(ruth): Check in the goods
+        print("Goods: " + _goodsDescriptionInputController.text);
+        print("Quantity: " + _quantityInputController.text);
+        print("Quantity Unit Type: " + _quantityUnitTypeInputController.text);
+        print("Invoice Number: " + _invoiceNbrInputController.text);
+        print("Destination: " + _destinationInputController.text);
+        _successSignedInDialog();
+      }
+    }
   }
 
   _cancel() {
