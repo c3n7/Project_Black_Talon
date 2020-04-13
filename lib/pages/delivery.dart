@@ -330,7 +330,7 @@ class _DeliveryScreenState extends State<StatefulWidget> {
         _phoneNbr = snapShot.data['phone_number'];
       });
     } else {
-      print("Account not exist");
+      print("Account does not exist");
       setState(() {
         _accountPresent = false;
       });
