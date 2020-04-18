@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Project_Black_Talon/navigationdrawer.dart';
-
+import 'package:Project_Black_Talon/services/auth.dart';
 class ReceivingParcelsScreen extends StatefulWidget {
   _ReceivingParcelsScreenState createState() => _ReceivingParcelsScreenState();
 }
@@ -33,6 +33,7 @@ class _ReceivingParcelsScreenState extends State<StatefulWidget> {
   String _surname = "";
   String _phoneNbr = "";
 
+CrudMethods obj = new CrudMethods();
   // TODO(c3n7): Do better validation
   String _idNumberValidator(String idNumber) {
     if (idNumber.isEmpty) {
@@ -249,18 +250,18 @@ class _ReceivingParcelsScreenState extends State<StatefulWidget> {
   }
 
   Future<void> checkExists(String idNumber) async {
-    /*final DocumentSnapshot snapShot = await Firestore.instance
-        .collection('deliverors')
+    final DocumentSnapshot snapShot = await Firestore.instance
+        .collection('parcels_person')
         .document(idNumber)
         .get();
         */
-    if (/*snapShot.exists*/ false) {
+    if (snapShot.exists) {
       print("Account Exists");
       setState(() {
         _accountPresent = true;
-        // _firstName = snapShot.data['first_name'];
-        // _surname = snapShot.data['surname'];
-        // _phoneNbr = snapShot.data['phone_number'];
+        _firstName = snapShot.data['first_name'];
+        _surname = snapShot.data['surname'];
+        _phoneNbr = snapShot.data['phone_number'];
       });
     } else {
       print("Account not exist");
@@ -301,6 +302,11 @@ class _ReceivingParcelsScreenState extends State<StatefulWidget> {
             this._currentStep += 1;
             _stepStates[this._currentStep] = StepState.editing;
           });
+	  obj.addParcelPerson({
+         'First_Name':this._firstNameInputController.text,
+	 'Surname':this._surnameInputController.text},_idNumberInputController.text).catchError((e){
+	  print(e);
+	  });
           // TODO(ruth): The account for the bio doesn't exist, react appropriately
           print("Id Number : " + _idNumberInputController.text);
           print("First Name: " + _firstNameInputController.text);
@@ -317,6 +323,15 @@ class _ReceivingParcelsScreenState extends State<StatefulWidget> {
           this._currentStep = _getSteps().length - 1;
           _stepStates[this._currentStep] = StepState.editing;
         });
+	obj.addParcelGoods({
+       'id_Number':this._idNumberInputController.text,
+       'company_from':this._companyFromInputController.text,
+       'good_type':this._goodTypeInputController.text,
+       'destination':this._destinationInputController.text,
+       'time_delivered':Timestamp.now()
+	}).catchError((e){
+	print(e);
+	});
         // TODO(ruth): Check in the goods
         print("Company From: " + _companyFromInputController.text);
         print("Good Type: " + _goodTypeInputController.text);

@@ -114,4 +114,33 @@ class CrudMethods {
       print('You are not logged in');
     }
   }
+
+  Future<void> addDomestic(db ,String idNumber)async {
+   if(isLoggedIn()){
+    return await Firestore.instance.collection('domestic').document(idNumber).setData(db).catchError((e){
+
+    });
+    
+   } else {
+   print('you are not logged in');
+  }
+}
+
+Future<void> addParcelPerson(db, String idNumber) async{
+if(isLoggedIn())
+{ 
+return await Firestore.instance.collection('parcels_person').document(idNumber).setData(db).catchError((e){
+print(e);
+});
+}
+}
+Future<void> addParcelGoods(db)async {
+
+if(isLoggedIn()){
+return await Firestore.instance.collection('parcels_goods').add(db).catchError((e){
+print(e);
+});
+}
+
+}
 }
