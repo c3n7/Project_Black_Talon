@@ -32,6 +32,8 @@ class _SportsScreenState extends State<StatefulWidget> {
   String _surname = "";
   String _phoneNbr = "";
 
+  CrudMethods obj = CrudMethods();
+
   // TODO(c3n7): Do better validation
   String _idNumberValidator(String idNumber) {
     if (idNumber.isEmpty) {
@@ -245,18 +247,17 @@ class _SportsScreenState extends State<StatefulWidget> {
   }
 
   Future<void> checkExists(String idNumber) async {
-    /*final DocumentSnapshot snapShot = await Firestore.instance
-        .collection('deliverors')
+    final DocumentSnapshot snapShot = await Firestore.instance
+        .collection('sports_person')
         .document(idNumber)
         .get();
-        */
-    if (/*snapShot.exists*/ false) {
+    if (snapShot.exists) {
       print("Account Exists");
       setState(() {
         _accountPresent = true;
-        // _firstName = snapShot.data['first_name'];
-        // _surname = snapShot.data['surname'];
-        // _phoneNbr = snapShot.data['phone_number'];
+        _firstName = snapShot.data['first_name'];
+        _surname = snapShot.data['surname'];
+        _phoneNbr = snapShot.data['phone_number'];
       });
     } else {
       print("Account not exist");
@@ -298,6 +299,12 @@ class _SportsScreenState extends State<StatefulWidget> {
             _stepStates[this._currentStep] = StepState.editing;
           });
           // TODO(ruth): The account for the bio doesn't exist, react appropriately
+	  obj.addSportsPerson({
+	  'First_Name':this._firstNameInputController.text,
+	  'Surname':this._surnameInputController.text,
+	  'Phone_Number':this._phoneNbrInputController.text},_idNumberInputController.text).catchError((e){
+print(e);
+});
           print("Id Number : " + _idNumberInputController.text);
           print("First Name: " + _firstNameInputController.text);
           print("Surname: " + _surnameInputController.text);
@@ -322,6 +329,17 @@ class _SportsScreenState extends State<StatefulWidget> {
           _stepStates[this._currentStep] = StepState.editing;
         });
         // TODO(ruth): Send data
+	obj.updateSports({
+        'First_Name':this._firstNameInputController.text,
+	'surname':this._surnameInputController.texr,
+	'Phone_Number':this._phoneNbrInputController.text,
+	'Vehicle_Reg_No':this._vehicleRegInputController.text,
+        'Number_of_Occupants':this._nbrOfOccupantsInputController.text,
+	'Game':this._gameInputController.text,
+	'Arrival_Time':Timestamp.now()
+	}).catchError((e){
+	print(e);
+        });
         print("Vehicle: " + _vehicleRegInputController.text);
         print("Nbr of Occupants: " + _nbrOfOccupantsInputController.text);
         print("Game: " + _gameInputController.text);

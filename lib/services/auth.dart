@@ -134,13 +134,29 @@ print(e);
 });
 }
 }
-Future<void> addParcelGoods(db)async {
 
+Future<void> addParcelGoods(db)async {
 if(isLoggedIn()){
 return await Firestore.instance.collection('parcels_goods').add(db).catchError((e){
 print(e);
 });
 }
-
 }
+
+Future<void> addSportsPerson(db, String idNumber)async {
+if(isLoggedIn()){
+return await Firestore.instance.collection('sports_person').document(idNumber).setData(db).catchError((e){
+print(e);
+});
+}
+}
+
+Future<void> updateSports(String idNumber, db)async{
+if(isLoggedIn()){
+return await Firestore.instance.collection('sports_person').document(idNumber).updateData(db).catchError((e){
+print(e);
+});
+}
+}
+
 }
