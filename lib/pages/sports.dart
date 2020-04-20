@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:Project_Black_Talon/navigationdrawer.dart';
-
+import 'package:Project_Black_Talon/services/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 class SportsScreen extends StatefulWidget {
   _SportsScreenState createState() => _SportsScreenState();
 }
