@@ -254,7 +254,6 @@ CrudMethods obj = new CrudMethods();
         .collection('parcels_person')
         .document(idNumber)
         .get();
-        */
     if (snapShot.exists) {
       print("Account Exists");
       setState(() {
