@@ -39,6 +39,7 @@ class _DeliveryScreenState extends State<StatefulWidget> {
   String _phoneNbr = "";
 
   CrudMethods obj = new CrudMethods();
+
   // TODO(c3n7): Do better validation
   String _idNumberValidator(String idNumber) {
     if (idNumber.isEmpty) {
@@ -281,41 +282,6 @@ class _DeliveryScreenState extends State<StatefulWidget> {
     );
   }
 
-  /*  Future<dynamic> getDeliverors(String varuID) async {
-    QuerySnapshot qs =
-        await Firestore.instance.collection('deliverors').getDocuments();
-    qs.documents.forEach((DocumentSnapshot snap) {
-      snap.documentID;
-    });
-  }
-  
-*/
-  /* Future<dynamic> checkExists(reference, String idNumber) async {
-    DocumentSnapshot doc =
-        await reference.collection('deliverors').document(idNumber).get();
-    this.setState(() {
-      _accountPresent = doc.exists;
-    });
-  }
-*/
-  /* Future<void> getDeliverors(String idNumber) async {
-    return await Firestore.instance
-        .collection('deliverors')
-        .where(idNumber, isEqualTo: this._idNumberInputController.text)
-        .getDocuments();
-  }
-*/
-  /* getDeliverors(idNumber)async{
-  QuerySnapshot db = await Firestore.instance.collection('deliverors').document(idNumber).get().then(function(querySnapshot){
-  querySnapshot.forEach(function(doc){
-  
-  print(doc.id, ":",doc.data());
-  });
-  });
-  
-  }
-  */
-
   Future<void> checkExists(String idNumber) async {
     final DocumentSnapshot snapShot = await Firestore.instance
         .collection('deliverors')
@@ -375,6 +341,9 @@ class _DeliveryScreenState extends State<StatefulWidget> {
           }, _idNumberInputController.text).catchError((e) {
             print(e);
           });
+
+          // TODO(ruth): Check if the ID is in firebase then modify:
+
           // TODO(ruth): The account for the bio doesn't exist, react appropriately
           print("Id Number : " + _idNumberInputController.text);
           print("First Name: " + _firstNameInputController.text);

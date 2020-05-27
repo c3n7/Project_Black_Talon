@@ -77,11 +77,11 @@ class CrudMethods {
     }
   }
 
-  Future<void> addDeliverors(db, String idNumber) async {
+  Future<void> addDeliverors(db, String id) async {
     if (isLoggedIn()) {
       return await Firestore.instance
           .collection('deliverors')
-          .document(idNumber)
+          .document(id)
           .setData(db)
           .catchError((e) {
         print(e);
