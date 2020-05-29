@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:Project_Black_Talon/navigationdrawer.dart';
 import 'package:Project_Black_Talon/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -332,18 +331,15 @@ class _SportsScreenState extends State<StatefulWidget> {
           _stepStates[this._currentStep] = StepState.editing;
         });
         // TODO(ruth): Send data
-        obj.updateSports(
-          {
-            'first_name': this._firstNameInputController.text,
-            'surname': this._surnameInputController.text,
-            'phone_number': this._phoneNbrInputController.text,
-            'vehicle_reg_no': this._vehicleRegInputController.text,
-            'number_of_occupants': this._nbrOfOccupantsInputController.text,
-            'game': this._gameInputController.text,
-            'arrival_time': Timestamp.now()
-          },
-          _idNumberInputController.text,
-        ).catchError((e) {
+        obj.updateSports({
+          'First_Name': this._firstNameInputController.text,
+          'Surname': this._surnameInputController.text,
+          'Phone_Number': this._phoneNbrInputController.text,
+          'Vehicle_Reg_No': this._vehicleRegInputController.text,
+          'Number_of_Occupants': this._nbrOfOccupantsInputController.text,
+          'Game': this._gameInputController.text,
+          'Arrival_Time': Timestamp.now()
+        }, _idNumberInputController.text).catchError((e) {
           print(e);
         });
         print("Vehicle: " + _vehicleRegInputController.text);
