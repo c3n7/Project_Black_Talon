@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Project_Black_Talon/navigationdrawer.dart';
+import 'package:Project_Black_Talon/services/auth.dart';
 
 class DomesticAndTeachersScreen extends StatefulWidget {
   _DomesticAndTeachersState createState() => _DomesticAndTeachersState();
@@ -162,27 +163,28 @@ class _DomesticAndTeachersState extends State<StatefulWidget> {
       );
     }
   }
-   Future<void>checkExists(String idNumber) async    { 
-   final DocumentSnapshot snapShot = await.firestore.instance.collection('deliverors').document(idNumber).get();
-   if (snapShot.exists){
-   print("Account Present");
-   setState((){ 
-   _accountPresent = true;
-   _firstName = snapShot.data['first_name'];
-   _surname = snapShot.data['surname'];
-   _phoneNbr = snapShot.data['phone_number'];
 
-   });
-   } 
-   else { 
-    print("Account does not exist");
-    setState((){
-    _accountPresent = false;
+  Future<void> checkExists(String idNumber) async {
+    final DocumentSnapshot snapShot = await Firestore.instance
+        .collection('deliverors')
+        .document(idNumber)
+        .get();
+    if (snapShot.exists) {
+      print("Account Present");
+      setState(() {
+        _accountPresent = true;
+        _firstName = snapShot.data['first_name'];
+        _surname = snapShot.data['surname'];
+        _phoneNbr = snapShot.data['phone_number'];
+      });
+    } else {
+      print("Account does not exist");
+      setState(() {
+        _accountPresent = false;
+      });
+    }
+  }
 
-    });
-
-   }
-   }
   _continue() {
     setState(() {
       if (this._currentStep == 0) {
@@ -193,8 +195,8 @@ class _DomesticAndTeachersState extends State<StatefulWidget> {
           _stepStates[this._currentStep] = StepState.indexed;
           this._currentStep += 1;
           _stepStates[this._currentStep] = StepState.editing;
-          
-	  checkExists(_idNumberInputController.text);
+
+          checkExists(_idNumberInputController.text);
           // TODO(ruth): Check if the ID is in firebase then modify:
           _accountPresent = false;
         }
