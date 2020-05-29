@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:Project_Black_Talon/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:Project_Black_Talon/navigationdrawer.dart';
+import 'package:Project_Black_Talon/services/auth.dart';
 
 class DomesticAndTeachersScreen extends StatefulWidget {
   _DomesticAndTeachersState createState() => _DomesticAndTeachersState();
