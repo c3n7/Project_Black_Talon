@@ -301,9 +301,9 @@ class _SportsScreenState extends State<StatefulWidget> {
           });
           // TODO(ruth): The account for the bio doesn't exist, react appropriately
           obj.addSportsPerson({
-            'First_Name': this._firstNameInputController.text,
-            'Surname': this._surnameInputController.text,
-            'Phone_Number': this._phoneNbrInputController.text
+            'first_name': this._firstNameInputController.text,
+            'surname': this._surnameInputController.text,
+            'phone_number': this._phoneNbrInputController.text
           }, _idNumberInputController.text).catchError((e) {
             print(e);
           });
