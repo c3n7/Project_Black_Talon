@@ -3,6 +3,8 @@ os:
     name: Ubuntu 18.04
     dist: bionic
 
+language: dart
+
 sudo: false
 # addons:
   # apt:
