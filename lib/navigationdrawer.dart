@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class NavigationDrawer extends StatelessWidget {
   @override
@@ -63,6 +64,11 @@ class NavigationDrawer extends StatelessWidget {
           leading: Icon(Icons.card_giftcard),
           title: new Text('Receiving Parcels'),
           onTap: () => Navigator.pushNamed(context, '/receiving_parcels'),
+        ),
+        new ListTile(
+          leading: FaIcon(FontAwesomeIcons.qrcode),
+          title: new Text('Scan'),
+          onTap: () => Navigator.pushNamed(context, '/scan_to_check_in'),
         ),
         // Icons.videogame_asset golf_course pool
         new ListTile(

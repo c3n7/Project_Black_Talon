@@ -13,6 +13,7 @@ import 'package:Project_Black_Talon/pages/sports.dart';
 import 'package:Project_Black_Talon/pages/students.dart';
 import 'package:Project_Black_Talon/pages/visitors.dart';
 import 'package:Project_Black_Talon/pages/white_as_snow.dart';
+import 'package:Project_Black_Talon/pages/scan_to_check_in.dart';
 
 void main() {
   runApp(
@@ -20,7 +21,9 @@ void main() {
       title: 'Black Talon',
       theme: ThemeData(
         brightness: Brightness.light,
-        primaryColor: Color(0xFF5B2326),
+        primaryColor: Color(0xFF772E25),
+        dialogBackgroundColor: Color(0xFFEDDDD4),
+        backgroundColor: Colors.white,
       ),
       initialRoute: '/',
       routes: {
@@ -33,6 +36,7 @@ void main() {
         '/item_movement': (context) => ItemMovementScreen(),
         '/keys': (context) => KeysScreen(),
         '/receiving_parcels': (context) => ReceivingParcelsScreen(),
+        '/scan_to_check_in': (context) => ScanToCheckInScreen(),
         '/sports': (context) => SportsScreen(),
         '/students': (context) => StudentsScreen(),
         '/visitors': (context) => VisitorsScreen(),
