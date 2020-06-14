@@ -1,11 +1,12 @@
-os:
-  - linux
-    name: Ubuntu 18.04
-    dist: bionic
+jobs:
+  include:
+    - os: linux
+      name: Ubuntu 18.04
+      dist: bionic
 
 language: dart
 
-sudo: false
+# sudo: false
 # addons:
   # apt:
     # packages:
