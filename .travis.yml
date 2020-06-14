@@ -21,7 +21,7 @@ before_script:
 
 script:
   - ./flutter/bin/flutter test --coverage
-  - cat coverage/lcov.info | codecov
+  - bash <(curl -s https://codecov.io/bash) -f coverage/lcov.info
 
 cache:
   directories:
