@@ -49,3 +49,5 @@ firebaseconfig.js
 .firebaserc
 firebase.json
 
+# Testing output
+coverage/

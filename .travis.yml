@@ -1,0 +1,25 @@
+os:
+  - linux
+sudo: false
+addons:
+  apt:
+    # Flutter depends on /usr/lib/x86_64-linux-gnu/libstdc++.so.6 version GLIBCXX_3.4.18
+    sources:
+      - ubuntu-toolchain-r-test # if we don't specify this, we get is the wrong libstdc++6 version
+    packages:
+      - libstdc++6
+      - fonts-droid
+env:
+  - CODECOV_TOKEN="4bd60378-87f7-4406-9335-31033252a2ac"
+
+before_script:
+  - git clone https://github.com/flutter/flutter.git -b beta
+  - ./flutter/bin/flutter doctor
+
+script:
+  - ./flutter/bin/flutter test --coverage
+  - cat coverage/lcov.info | codecov
+
+cache:
+  directories:
+    - $HOME/.pub-cache
