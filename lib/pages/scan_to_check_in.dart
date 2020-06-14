@@ -17,14 +17,6 @@ class _ScanToCheckInState extends State<ScanToCheckInScreen> {
     super.initState();
   }
 
-  _resetNavigationBarColor() {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: Color(0xFFFAFAFA),
-      systemNavigationBarIconBrightness: Brightness.dark,
-      systemNavigationBarDividerColor: Color(0xFFFAFAFA),
-    ));
-  }
-
   _showConfirmationDialog() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: Colors.white,
@@ -126,7 +118,6 @@ class _ScanToCheckInState extends State<ScanToCheckInScreen> {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                       onPressed: () {
-                        _resetNavigationBarColor();
                         Navigator.of(context).pop();
                       },
                     ),
@@ -137,7 +128,6 @@ class _ScanToCheckInState extends State<ScanToCheckInScreen> {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                       onPressed: () {
-                        _resetNavigationBarColor();
                         Navigator.of(context).pop();
                       },
                     ),
@@ -148,7 +138,13 @@ class _ScanToCheckInState extends State<ScanToCheckInScreen> {
           ),
         );
       },
-    );
+    ).whenComplete(() {
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        systemNavigationBarColor: Color(0xFFFAFAFA),
+        systemNavigationBarIconBrightness: Brightness.dark,
+        systemNavigationBarDividerColor: Color(0xFFFAFAFA),
+      ));
+    });
   }
 
   Widget _buildScanPage() {
