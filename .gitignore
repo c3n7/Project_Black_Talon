@@ -42,12 +42,13 @@ app.*.map.json
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
-# firebase keys
+# api keys
 google-services.json
 firebaseconfig.js
 .firebase/
 .firebaserc
 firebase.json
+dsn.dart
 
 # Testing output
 coverage/

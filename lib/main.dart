@@ -18,10 +18,9 @@ import 'package:Project_Black_Talon/pages/students.dart';
 import 'package:Project_Black_Talon/pages/visitors.dart';
 import 'package:Project_Black_Talon/pages/white_as_snow.dart';
 import 'package:Project_Black_Talon/pages/scan_to_check_in.dart';
+import 'package:Project_Black_Talon/dsn.dart';
 
-final SentryClient _sentry = new SentryClient(
-    dsn:
-        "https://8becd3e45a3e46e188f03f8a081924ed@o400371.ingest.sentry.io/5275850");
+final SentryClient _sentry = new SentryClient(dsn: dsn);
 
 Future<Null> _reportError(dynamic error, dynamic stackTrace) async {
   print('Caught error: $error');
