@@ -1,5 +1,5 @@
 # Project Black Talon
-[![codecov](https://codecov.io/gh/c3n7/Project_Black_Talon/branch/master/graph/badge.svg)](https://codecov.io/gh/c3n7/Project_Black_Talon)
+[![codecov](https://codecov.io/gh/c3n7/Project_Black_Talon/branch/master/graph/badge.svg)](https://codecov.io/gh/c3n7/Project_Black_Talon) [![Build Status](https://travis-ci.com/c3n7/Project_Black_Talon.svg?branch=master)](https://travis-ci.com/c3n7/Project_Black_Talon)
 
 - A gate check-in system developed using flutter.
 
