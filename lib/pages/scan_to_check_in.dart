@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 
 import 'package:Project_Black_Talon/navigationdrawer.dart';
+import 'package:flutter/services.dart';
 
 class ScanToCheckInScreen extends StatefulWidget {
   @override
@@ -16,7 +17,20 @@ class _ScanToCheckInState extends State<ScanToCheckInScreen> {
     super.initState();
   }
 
+  _resetNavigationBarColor() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Color(0xFFFAFAFA),
+      systemNavigationBarIconBrightness: Brightness.dark,
+      systemNavigationBarDividerColor: Color(0xFFFAFAFA),
+    ));
+  }
+
   _showConfirmationDialog() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarIconBrightness: Brightness.dark,
+      systemNavigationBarDividerColor: Color(0xFFFAFAFA),
+    ));
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
@@ -112,6 +126,7 @@ class _ScanToCheckInState extends State<ScanToCheckInScreen> {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                       onPressed: () {
+                        _resetNavigationBarColor();
                         Navigator.of(context).pop();
                       },
                     ),
@@ -122,6 +137,7 @@ class _ScanToCheckInState extends State<ScanToCheckInScreen> {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                       onPressed: () {
+                        _resetNavigationBarColor();
                         Navigator.of(context).pop();
                       },
                     ),

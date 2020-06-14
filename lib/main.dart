@@ -14,10 +14,21 @@ import 'package:Project_Black_Talon/pages/students.dart';
 import 'package:Project_Black_Talon/pages/visitors.dart';
 import 'package:Project_Black_Talon/pages/white_as_snow.dart';
 import 'package:Project_Black_Talon/pages/scan_to_check_in.dart';
+import 'package:flutter/services.dart';
 
 void main() {
-  runApp(
-    MaterialApp(
+  runApp(MainApp());
+}
+
+class MainApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Color(0xFFFAFAFA),
+      systemNavigationBarIconBrightness: Brightness.dark,
+      systemNavigationBarDividerColor: Color(0xFFFAFAFA),
+    ));
+    return new MaterialApp(
       title: 'Black Talon',
       theme: ThemeData(
         brightness: Brightness.light,
@@ -42,6 +53,6 @@ void main() {
         '/visitors': (context) => VisitorsScreen(),
         '/white_as_snow': (context) => WhiteAsSnowScreen(),
       },
-    ),
-  );
+    );
+  }
 }
