@@ -11,7 +11,10 @@ class ScanToCheckInScreen extends StatefulWidget {
 
 class _ScanToCheckInState extends State<ScanToCheckInScreen> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  String barcode = "";
+  String _barcode = "";
+  String _email = "";
+  String _username = "";
+  bool _checkin_in = true;
   @override
   void initState() {
     super.initState();
@@ -65,7 +68,7 @@ class _ScanToCheckInState extends State<ScanToCheckInScreen> {
                               ),
                             ),
                             Text(
-                              'John Doe',
+                              this._username,
                               style: TextStyle(
                                 // color: Color(0xFF56A3A6),
                                 color: Color(0xFF011638),
@@ -86,7 +89,7 @@ class _ScanToCheckInState extends State<ScanToCheckInScreen> {
                                 ),
                               ),
                               Text(
-                                this.barcode,
+                                this._email,
                                 style: TextStyle(
                                   color: Color(0xFF011638),
                                 ),
@@ -122,12 +125,17 @@ class _ScanToCheckInState extends State<ScanToCheckInScreen> {
                       },
                     ),
                     MaterialButton(
-                      child: Text('Check-In'),
+                      child: Text(this._checkin_in ? 'Check-In' : 'Check-Out'),
                       color: Theme.of(context).primaryColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                       onPressed: () {
+                        if (this._checkin_in) {
+                          _checkinPerson();
+                        } else {
+                          _checkOutPerson();
+                        }
                         Navigator.of(context).pop();
                       },
                     ),
@@ -204,9 +212,37 @@ class _ScanToCheckInState extends State<ScanToCheckInScreen> {
   Future scan() async {
     ScanResult barcode = await BarcodeScanner.scan();
     setState(() {
-      this.barcode = barcode.rawContent.toString();
-      print(this.barcode);
+      this._barcode = barcode.rawContent.toString();
+      print(this._barcode);
     });
+    _verifyEmail();
     _showConfirmationDialog();
+  }
+
+  _verifyEmail() {
+    // TODO(ruth):  retrieve the email details then fill the variables
+    // _email(string), and _username(string) and _checkin_in(boolean)
+    // delete this fallback code
+    this._email = this._barcode;
+    this._checkin_in = true;
+    if (this._email == "john.doe@bandaschool.com") {
+      this._username = "John Doe";
+    } else {
+      this._username = "Jane Doe";
+    }
+  }
+
+  _checkinPerson() {
+    // Called if _checkin_in is true
+    // TODO(ruth): add necessary code
+    print("Checkin in person\n");
+    return;
+  }
+
+  _checkOutPerson() {
+    // TODO(ruth): add necessary code
+    // Called if _checkin_in is false
+    print("Checkin out person\n");
+    return;
   }
 }
