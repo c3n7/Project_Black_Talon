@@ -22,52 +22,39 @@ class _ScanToCheckInState extends State<ScanToCheckInScreen> {
 
   _showConfirmationDialog() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: Color(0xFF737373),
-      systemNavigationBarIconBrightness: Brightness.light,
-      systemNavigationBarDividerColor: Color(0xFF737373),
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarIconBrightness: Brightness.dark,
+      systemNavigationBarDividerColor: Color(0xFFFAFAFA),
     ));
-    return showDialog(
+    showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          contentPadding: EdgeInsets.only(
-            left: 10,
-            top: 10,
-            bottom: 0,
-            right: 10,
-          ),
-          titlePadding: EdgeInsets.only(
-            left: 10,
-            top: 13,
-            bottom: 0,
-            right: 10,
-          ),
-          contentTextStyle: TextStyle(
-            fontSize: 14,
-          ),
-          backgroundColor: Colors.white,
-          title: Center(
-            child: Text(
-              "Confirm",
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF011638),
-              ),
-            ),
-          ),
-          content: SingleChildScrollView(
-            child: ListBody(
+        return SingleChildScrollView(
+          child: Container(
+            color: Theme.of(context).backgroundColor,
+            child: Column(
               children: <Widget>[
                 Container(
+                  padding: EdgeInsets.fromLTRB(0, 12, 0, 7),
+                  child: Text(
+                    "Confirm",
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF011638),
+                    ),
+                  ),
+                ),
+                Container(
                   width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       color: Theme.of(context).dialogBackgroundColor,
                     ),
                     child: Padding(
-                      padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
+                      padding: EdgeInsets.all(20),
                       child: Column(
                         children: <Widget>[
                           Row(
@@ -115,43 +102,50 @@ class _ScanToCheckInState extends State<ScanToCheckInScreen> {
                     ),
                   ),
                 ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: ButtonBar(
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      MaterialButton(
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      MaterialButton(
+                        child:
+                            Text(this._checkin_in ? 'Check-In' : 'Check-Out'),
+                        color: Theme.of(context).primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        onPressed: () {
+                          if (this._checkin_in) {
+                            _checkinPerson();
+                          } else {
+                            _checkOutPerson();
+                          }
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
-          actions: <Widget>[
-            MaterialButton(
-              child: Text(
-                'Cancel',
-                style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
-              shape: RoundedRectangleBorder(
-                side: BorderSide(
-                  color: Theme.of(context).primaryColor,
-                ),
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            MaterialButton(
-              child: Text(this._checkin_in ? 'Check-In' : 'Check-Out'),
-              color: Theme.of(context).primaryColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              onPressed: () {
-                if (this._checkin_in) {
-                  _checkinPerson();
-                } else {
-                  _checkOutPerson();
-                }
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
         );
       },
     ).whenComplete(() {
